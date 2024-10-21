@@ -1,0 +1,56 @@
+DATETIME=$(date +%Y%m%d_%H%M%S)
+OUTPUT_FOLDER=outputs/experiment/pert/dentategyrus/pert_subset_sampling_ode_model_$DATETIME
+
+export WANDB_API_KEY=YOUR_WANDB_KEY
+python perturb.py --trainer_ckpt_path outputs/experiment/train/dentategyrus/ode_model_all_20240122_154741/model-3.pt \
+    --model.dim 64 \
+    --model.input-dim 1087 \
+    --pert.model-type subset_sampling \
+    --pert.perturbation-num 10 \
+    --pert.subset-sampling.no-use-scheduler \
+    --pert.subset-sampling.lr 1e-3 \
+    --pert.subset-sampling.tau 0.1 \
+    --pert.subset-sampling.tau-start 2 \
+    --pert.subset-sampling.tau-anneal-steps 3000 \
+    --pert.subset-sampling.tau-scheduler-name linear \
+    --pert.subset-sampling.no-hard \
+    --pert.subset-sampling.sampler-pert-type parameterized_subset_sampling \
+    --pert.subset-sampling.sampler-type subset_topk \
+    --pert.subset-sampling.parameterized-embedding-dim 128 \
+    --pert.subset-sampling.parameterized-hidden-dim 64 \
+    --pert.subset-sampling.optimizer-name Adam \
+    --trainer.pert-num-steps 3000 \
+    --trainer.pert-state-step -1 \
+    --trainer.train-batch-size 64 \
+    --trainer.save-and-sample-every 1000 \
+    --trainer.num-workers 4 \
+    --trainer.dataset-name dentategyrus \
+    --trainer.data-folder datasets/pretrain/dentategyrus/trajs/sampled_traj_train.npz \
+    --trainer.eval-data-folder datasets/pretrain/dentategyrus/trajs/sampled_traj_val.npz \
+    --trainer.test-data-folder datasets/pretrain/dentategyrus/trajs/sampled_traj_test.npz \
+    --trainer.output-folder $OUTPUT_FOLDER \
+    --trainer.ann_prc_data datasets/pretrain/dentategyrus/data/dentategyrus.h5ad \
+    --trainer.ann_raw_data datasets/pretrain/dentategyrus/data/dentategyrus.h5ad.raw \
+    --trainer.starting-cell-type Nbl2 \
+    --trainer.train-only-starting-cell-type-data \
+    --trainer.cell-type-ratio-keys Granule CA \
+    --trainer.deep-velo-model-checkpoint datasets/pretrain/dentategyrus/model/autoencoder.pth \
+    --trainer.deep-velo-model-dim 1087 \
+    --trainer.deep-velo-scaling-factor 1.2588072545606313 \
+    --trainer.deep-velo-intermediate-step 3 \
+    --trainer.t-span 0 1 \
+    --trainer.t-step 65 \
+    --trainer.seq-step 5 \
+    --head-trainer.dataset-name dentategyrus \
+    --head-trainer.ann-prc-data datasets/pretrain/dentategyrus/data/dentategyrus.h5ad \
+    --head-trainer.output-folder $OUTPUT_FOLDER/head_model \
+    --head-trainer.train-num-steps 3000 \
+    --head-trainer.save-and-eval-every 500 \
+    --head-trainer.cell-type-list CA CA2-3-4 GlialProg Granule ImmAstro Granule Nbl1 Nbl2 OPC RadialGlia RadialGlia2 nIPC \
+    --head-trainer.tgt-cell-type CA \
+    --slurm.mode slurm \
+    --slurm.slurm-output-folder $OUTPUT_FOLDER/slurm \
+    --slurm.cpus-per-task 4 \
+    --slurm.node_list laniakea \
+    --wandb.name pert_subset_dentategyrus_$DATETIME \
+    --wandb.notes "using train test splits"

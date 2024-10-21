@@ -1,0 +1,19 @@
+python train.py --model.dim 64 \
+    --model.input-dim 334 \
+    --trainer.starting_cell_type HSC_2 \
+    --trainer.deep_velo_model_dim 334 \
+    --trainer.cell_type_ratio_keys DCs Precursors \
+    --trainer.train-batch-size 64 \
+    --trainer.train-num-steps 3000 \
+    --trainer.save-and-sample-every 500 \
+    --trainer.num-workers 4 \
+    --trainer.data-folder datasets/pretrain/bonemarrow/trajs/sampled_traj_train.npz \
+    --trainer.eval_data_folder datasets/pretrain/bonemarrow/trajs/sampled_traj_test.npz \
+    --trainer.train-only-starting-cell-type-data \
+    --trainer.output-folder datasets/bonemarrow/ode_train \
+    --trainer.ann_prc_data datasets/pretrain/bonemarrow/data/bonemarrow.h5ad \
+    --trainer.ann_raw_data datasets/pretrain/bonemarrow/data/bonemarrow.h5ad.raw \
+    --trainer.t-span 0 1 \
+    --trainer.t-step 65 \
+    --trainer.seq-step 5 \
+    --trainer.deep_velo_model_checkpoint datasets/pretrain/bonemarrow/model/autoencoder.pth
