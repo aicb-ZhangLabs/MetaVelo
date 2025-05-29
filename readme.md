@@ -1,11 +1,11 @@
 <h1 align="center"><strong>MetaVelo</strong></h1>
 
-Code for the paper "Identifying Combinatorial Regulatory Genes for Cell Fate Decision via Reparameterizable Subset Explanations" (KDD 2025).
 
 <p align="center">
   <img src="assets/overview.jpg" alt="Overview of MetaVelo">
 </p>
 
+Code for the paper "Identifying Combinatorial Regulatory Genes for Cell Fate Decision via Reparameterizable Subset Explanations" (KDD 2025).
 
 Our code is implemented using PyTorch and all experiments are run through the cluster job scheduler `slurm`. All jobs are submitted to clusters using the `submitit` package. To run locally, please set `slurm.mode` to `local`.
 
