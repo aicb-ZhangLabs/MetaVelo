@@ -1,28 +1,47 @@
 <h1 align="center"><strong>MetaVelo</strong></h1>
 
-Our code is implemented using PyTorch and all experiments are run through the cluster job scheduler `slurm`. All jobs are submitted to clusters using the `submitit` package. To run in local, please set `slurm.mode` to `local`.
+Code for the paper "Identifying Combinatorial Regulatory Genes for Cell Fate Decision via Reparameterizable Subset Explanations" (KDD 2025).
 
-Our code is fully configurable. For any execution python scripts, use `-h` to see all arguments and descriptions. For example, `python train.py -h`. We use `wandb` to visualize the training process.
+<p align="center">
+  <img src="assets/overview.jpg" alt="Overview of MetaVelo">
+</p>
+
+
+Our code is implemented using PyTorch and all experiments are run through the cluster job scheduler `slurm`. All jobs are submitted to clusters using the `submitit` package. To run locally, please set `slurm.mode` to `local`.
+
+Our code is fully configurable. For any execution Python scripts, use `-h` to see all arguments and descriptions. For example, `python train.py -h`. We use `wandb` to visualize the training process.
+
+If you use this code, please consider citing the paper using the BibTeX reference below.
+
+```bibtex
+@inproceedings{metavelo2025,
+    title={Identifying Combinatorial Regulatory Genes for Cell Fate Decision via Reparameterizable Subset Explanations},
+    author={Junhao Liu, Pengpeng Zhang, Martin Renqiang Min, and Jing Zhang},
+    booktitle={Proceedings of the 31st ACM SIGKDD Conference on Knowledge Discovery and Data Mining V.2 (KDD '25), August 3--7, 2025, Toronto, ON, Canada},
+    year={2025},
+}
+```
 
 ## File Structures
 
-- `configs`: contains all experiment related configurations
+- `configs`: contains all experiment-related configurations
 - `scripts`: contains all bash scripts to launch experiments
 - `src`: contains all source code
   - `pert`: source code of perturbation methods
-  - `trainer`: source code of perturbation training logits
+  - `trainer`: source code of perturbation training logic
 - `tests`: test code
 
 ## Dependencies
 
-1. Python: 3.10.12
-2. Install `scvelo` using the latest version at the master branch
+- Python: 3.10.12
+- PyTorch: 2.0.1
+- Install `scvelo` using the latest version at the master branch
 
     ```bash
     pip install git+https://github.com/theislab/scvelo@d89ca6aecbe93256fbcdd8a521fdee2b9f2a673a
     ```
 
-3. Install other required packages
+- Install other required packages
 
     ```bash
     pip install -r requirements.txt
@@ -30,7 +49,7 @@ Our code is fully configurable. For any execution python scripts, use `-h` to se
 
 ## Data Preprocessing
 
-We provided preprocessing scripts of three datasets in  `scripts/preprocess`, `scripts/pretrain`, and `scripts/pretrajectory`.
+We provide preprocessing scripts for three datasets in `scripts/preprocess`, `scripts/pretrain`, and `scripts/pretrajectory`.
 
 1. Preprocess dataset
 
@@ -38,8 +57,8 @@ We provided preprocessing scripts of three datasets in  `scripts/preprocess`, `s
     sh scripts/preprocess/preprocess_pancreas.sh
     ```
 
-2. Sampled trajectories
-The pretraining process would run on Slurm.
+2. Sample trajectories
+The pretraining process will run on Slurm.
 
     ```bash
     sh scripts/pretrain/pretrain_pancreas.sh
@@ -56,7 +75,7 @@ sh scripts/train/train_pancreas.sh
 
 ## Reparametrizable Subset Sampling for Perturbation
 
-All lauch scripts are listed in `scripts/perturbation`.
+All launch scripts are listed in `scripts/perturbation`.
 
 Run perturbation on the pretrained surrogate model. This process would run on Slurm. To see argument details, use `python perturb.py -h`. To reproduce our experiments,
 
